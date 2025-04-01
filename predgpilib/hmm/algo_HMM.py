@@ -56,7 +56,7 @@ import numpy as NUM
 import copy
 
 ARRAYFLOAT=NUM.float64
-ARRAYINT=NUM.int
+ARRAYINT=int   # not using numpy.int https://numpy.org/devdocs/release/1.20.0-notes.html#deprecations
 
 
 def for_back_mat(hmm, seq, Scale=None, labels=None):
