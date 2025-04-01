@@ -119,7 +119,7 @@ def readFasta(fname):
     name=None
     seq=''
     for line in lines:
-        if line.startwith('>'): # assuming fasta file
+        if line[0] == '>': # assuming fasta file
             if name is not None:
                 seqs[name]=seq.replace(' ','')
                 seq=''
