@@ -12,7 +12,7 @@ def get_json_output(acc, sequence, gpi, cleavage, prob):
     acc_json['sequence'] = {
                               "length": len(sequence),
                               "sequence": sequence
-                           }
+                            }
     if gpi:
         acc_json['features'].append({
             "type": "LIPID",

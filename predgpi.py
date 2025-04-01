@@ -18,9 +18,9 @@ except ImportError:
 
 def fitFPR(x):
     ''' fitFPR(x)
-          provide an extimate of the False Positive Rate using
-          ROC_ok Pierleoni data
-          x is the svm prediction
+        provide an estimate of the False Positive Rate using
+        ROC_ok Pierleoni data
+        x is the svm prediction
            => it has been chosen so that for a svm value > -0.61 the TPR < 0.005 on the dataset
     '''
     return 1/(1.0+numpy.exp(-6.8*(-x-1.39)))
@@ -81,10 +81,10 @@ def mksvmInput(seq,lphmm):
             kdl20+=kd_scale[aa]
     kdl20/=20.0*4.5
     kdf20=0.0
-    for aa in seq[0:20]:
+    for aa in seq[:20]:
         if aa in resPos.keys():
             tmpVec[60+resPos[aa]]+=n20
-    for aa in seq[0:21]:
+    for aa in seq[:21]:
         if aa in resPos.keys():
             kdf20+=kd_scale[aa]
     kdf20/=21.0*4.5
@@ -112,27 +112,27 @@ def readFasta(fname):
     import sys
     try:
         lines=open(fname,'r').readlines()
-    except:
+    except Exception:
         sys.stderr.write('cannot open file '+fname+'\n')
         sys.exit()
     seqs={}
-    name=''
+    name=None
     seq=''
     for line in lines:
-        if line[0]=='>': # assuming fasta file
-           if name != '':
-               seqs[name]=seq
-               seq=''
-           name=''.join(line[1:].split())
+        if line.startwith('>'): # assuming fasta file
+            if name is not None:
+                seqs[name]=seq.replace(' ','')
+                seq=''
+            name=line[1:].split()[0]
         else:
-           seq+=''.join(line.split())
-    if name != '':
-        seqs[name]=seq
+            seq += line.strip()
+    if name is not None:
+        seqs[name]=seq.replace(' ','')
     return seqs
 
 def printVal(sequence,svm,hmmmod):
     lprob,cut,svmout,fitFPR=predGpipe(sequence,svm,hmmmod)
-    print("Extimated False Positive Rate =",fitFPR)
+    print("Estimated False Positive Rate =",fitFPR)
     print("HMM log(probability) =",lprob)
     print("GPI-Anchor length=",cut)
     if fitFPR <= 0.0015: # threshold to accept the sequence as GPI
